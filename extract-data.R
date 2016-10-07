@@ -1,5 +1,5 @@
 ################################################################################
-# File-Name: extract-data.R                                                     #
+# File-Name: extract-data.R                                                    #
 # Date: 7 October 2016                                                         #
 # Author: Sara J Kerr                                                          # 
 # ORCID:orcid.org/0000-0002-2322-1178                                          #
@@ -41,12 +41,6 @@ extract_data <- function(xmlfile, ...) {
                                     [["profileDesc"]][["textClass"]]
                                     [["keywords"]][["list"]]), xmlValue)
         
-        # Extract information from the body 
-        bod_list <- xmlToList(xmltop[["text"]][["group"]][["text"]][["body"]])
-        let_date <- bod_list[["opener"]][["dateline"]][["date"]]
-        let_salute <- bod_list[["opener"]][["salute"]]
-        let_signed <- bod_list[["closer"]][["signed"]]
-        let_close <- bod_list[["closer"]][["salute"]]
         
         # Extract the main text content from the body
         bod_vec <- xmlValue(xmltop[["text"]][["group"]][["text"]][["body"]])   
@@ -60,14 +54,9 @@ extract_data <- function(xmlfile, ...) {
         # A vector with the whole text as an element
         let_body2 <- paste0(bod_vec, collapse = " ")
         
-        # Column names for the letters_data data frame
-        headers <- c("Letter ID", "Title", "Author", "Date", "Repository",
-                     "Summary", "Salute", "Close", "Signed", "Letter Text")
         
         letters_data <- as.data.frame(cbind(let_id, let_title, let_author,
-                                            let_date, let_repo, let_summary,
-                                            let_salute, let_close, let_signed, 
-                                            let_body2))
+                                            let_repo, let_summary, let_body2))
         
         # let_keywords and let_body1 are saved as separate data frames as they
         # have multiple elements 
