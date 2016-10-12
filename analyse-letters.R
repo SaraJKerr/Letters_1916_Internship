@@ -12,7 +12,7 @@
 # Packages Used: XML, plyr,                                                    #
 # Input:                                                                       #
 # Output:                                                                      #
-# Last Updated: 7 October 2016                                                 #
+# Last Updated: 12 October 2016                                                #
 ################################################################################
 
 # Load packages
@@ -32,7 +32,7 @@ input_dir <- "RawData/Letters"
 files <- dir(input_dir, "\\.xml$")
 
 # Create a vector with the full filepath
-# Problematic files have been removed - to be dealt with later
+# Problematic files (42) have been removed - to be dealt with later
 x <- file.path(input_dir,files) 
 
 
@@ -55,4 +55,4 @@ letter_data <- ldply(letter_data, data.frame)
 keywords <- ldply(keywords, data.frame)
 words <- ldply(words, data.frame)
 
-
+# Create .txt files from letter body in letter_data and write to folder
