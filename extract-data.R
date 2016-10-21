@@ -12,7 +12,7 @@
 # Packages Used: XML, plyr,                                                    #
 # Input:   an XML document                                                     #
 # Output:  a list containing the 3 parts of the data                           #
-# Last Updated: 20 October 2016                                                 #
+# Last Updated: 20 October 2016                                                #
 ################################################################################
 
 # Function to read data from letter, save in variables and create data frames
@@ -37,8 +37,8 @@ extract_data <- function(xmlfile, ...) {
                                     [["sourceDesc"]][["msDesc"]] 
                                     [["msIdentifier"]] [["repository"]]
                                     [["text"]])
-        let_date <- xmlToList(xmltop[["teiHeader"]][["profileDesc"]]
-                                    [["correspDesc"]][[2]][[3]])
+        # let_date <- xmlToList(xmltop[["teiHeader"]][["profileDesc"]]
+        #                             [["correspDesc"]][[2]][[3]])
         let_keywords <- sapply(xmlChildren(xmltop[["teiHeader"]]
                                     [["profileDesc"]][["textClass"]]
                                     [["keywords"]][["list"]]), xmlValue)
@@ -58,14 +58,14 @@ extract_data <- function(xmlfile, ...) {
         
         
         letters_data <- as.data.frame(cbind(let_id, let_title, let_author,
-                                            let_repo, let_summary, let_date,
+                                            let_repo, let_summary, 
                                             let_body2))
         
         # let_keywords and let_words are saved as separate data frames as they
         # have multiple elements 
         letters_keywords <- as.data.frame(rbind(c(let_id, let_keywords)))
         
-        letters_words <- as.data.frame(rbind(c(let_id,let_date,let_body1)))
+        letters_words <- as.data.frame(rbind(c(let_id,let_body1)))
         
         # As R doesn't allow multiple results to be returned a list containing
         # the three data frames is created - they can be extracted easily by

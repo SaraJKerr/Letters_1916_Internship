@@ -12,7 +12,7 @@
 # Packages Used: XML, plyr,                                                    #
 # Input:                                                                       #
 # Output:                                                                      #
-# Last Updated: 12 October 2016                                                #
+# Last Updated: 21 October 2016                                                #
 ################################################################################
 
 # Load packages
@@ -41,7 +41,8 @@ letter_data <- list()
 keywords <- list()
 words <- list()
 
-# Loop over the files extracting the information
+# Loop over the files extracting the information - takes about 2 minutes for
+# 1000 files
 for (i in 1:length(x)) {
         xmlfile <- xmlParse(x[i], useInternalNodes = T)  
         results <- extract_data(xmlfile)
@@ -55,4 +56,16 @@ letter_data <- ldply(letter_data, data.frame)
 keywords <- ldply(keywords, data.frame)
 words <- ldply(words, data.frame)
 
-# Create .txt files from letter body in letter_data and write to folder
+# Create .txt files from letter body in letter_data and write to folder - this
+# uses the let_id as the file name and also includes it as part of the body
+# text for ease of tracking.
+
+a <- as.vector(letter_data$let_id)
+b <- as.vector(letter_data$let_body2)
+        for (i in 1:length(a)) {
+                y <- c(a[i], b[i])
+                write(y, paste0("Data/Letters_txt/", a[i], ".txt"))
+        } 
+
+
+
