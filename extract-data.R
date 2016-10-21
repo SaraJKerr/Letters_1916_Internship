@@ -12,7 +12,7 @@
 # Packages Used: XML, plyr,                                                    #
 # Input:   an XML document                                                     #
 # Output:  a list containing the 3 parts of the data                           #
-# Last Updated: 20 October 2016                                                #
+# Last Updated: 21 October 2016                                                #
 ################################################################################
 
 # Function to read data from letter, save in variables and create data frames

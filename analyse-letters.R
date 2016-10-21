@@ -67,5 +67,9 @@ b <- as.vector(letter_data$let_body2)
                 write(y, paste0("Data/Letters_txt/", a[i], ".txt"))
         } 
 
+# Topic Modelling
 
+
+
+# Vector Space Model
 
