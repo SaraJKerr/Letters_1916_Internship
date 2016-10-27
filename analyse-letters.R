@@ -120,7 +120,8 @@ rownames(df) <- rows
 
 write.csv(df, "Data/Letters.csv")
 
-# With ggrepel
+# With ggrepel - this uses a dot for the word location allowing the label to be
+# moved to avoid overlap - does not work well for very large plots
 ggplot(df) +
         geom_point(aes(x = V1, y = V2), color = "red") +
         geom_text_repel(aes(x = V1, y = V2, label = rownames(df))) +
@@ -146,4 +147,27 @@ ggplot(df, aes(x = V1, y = V2), label = rownames(df)) +
 
 ggsave("Letters.jpeg", path = "Viz/", width = 24, 
        height = 18, dpi = 100)
+
+
+source("Code/Letters_1916_Internship/word2vec-analysis-letters1916.R")
+
+# Explore specific words of interest use the function w2v_analysis_letters1916()
+# The function takes 5 arguments:
+# vsm - a vector space model 
+# word - a focus word in " "
+# seed - an integer
+# path - the path to the folder you want to save your results in
+# ref_name - the reference name for the exported files - must be in " "
+
+# The function will create a vector which is the average of the words input and 
+# will output a wordlist of the 500 nearest words, a csv of the words and their
+# positions in the t-SNE plot, and a plot of the 2D reduction of the vector space
+# model using t-SNE. The points for each word are marked in red so the labels 
+# can be moved for ease of reading.
+# set.seed is used to ensure replicability
+# To use: w2v_analysis_letters1916(vsm, word, seed, path, ref_name)
+# E.g. w2v_analysis_letters1916(let, "women", 123, "Viz/", "Women")
+
+w2v_analysis_letters1916()
+
 
