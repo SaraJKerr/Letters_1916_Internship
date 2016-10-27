@@ -8,7 +8,8 @@
 ### Overview
 #### The Letters of 1916 project is the first public humanities project in Ireland. 
 It is creating a crowd-sourced digital collection of letters written around the time of the Easter Rising (1 November 1915 – 31 October 1916).
-The project website can be found at: http://letters1916.maynoothuniversity.ie Professor Susan Schreibman is the Project Director and Editor-in-Chief
+The project website can be found at: http://letters1916.maynoothuniversity.ie 
+Professor Susan Schreibman is the Project Director and Editor-in-Chief
 
 
 
