@@ -12,7 +12,7 @@
 # Packages Used: XML, plyr,                                                    #
 # Input:                                                                       #
 # Output:                                                                      #
-# Last Updated: 23 October 2016                                                #
+# Last Updated: 27 October 2016                                                #
 ################################################################################
 
 # Load packages
@@ -118,7 +118,7 @@ df <- as.data.frame(reduction$Y)
 rows <- rownames(let)
 rownames(df) <- rows
 
-write.csv(df, paste0("Data/Letters.csv"))
+write.csv(df, "Data/Letters.csv")
 
 # With ggrepel
 ggplot(df) +
@@ -142,56 +142,8 @@ ggplot(df, aes(x = V1, y = V2), label = rownames(df)) +
         geom_text(fontface = 2, alpha = .8, label = rownames(df)) +
         theme_bw(base_size = 12) + 
         theme(legend.position = "none") +
-        ggtitle("2D reduction of VSM Letters using t_SNE v.2")
+        ggtitle("2D reduction of VSM Letters using t_SNE")
 
-ggsave("Letters_v2.jpeg", path = "Viz/", width = 24, 
+ggsave("Letters.jpeg", path = "Viz/", width = 24, 
        height = 18, dpi = 100)
-
-# Network analysis
-
-# Create a matrix of cosine difference between each word in model and every 
-# other word in the same model closer to 0 = similarity and closer to 2 = total
-# difference
-
-similarity <- cosineSimilarity(let, let) %>% round(2)
-
-# Identifies index of matrix elements which are greater than 0.5
-y <- which(similarity > 0.5, arr.in = TRUE)
-
-# Edge list - 
-# create vectors of words for from and to
-from <- rownames(y)
-to_words <- colnames(similarity)
-to <- to_words[y[ , 2]]
-y1 <- y[ , 1]
-y2 <- y[ , 2]
-
-# create vector for weight - this takes time but only needs done once
-w <- vector()
-for (i in 1:length(y1)) {
-        w <- c(w, similarity[y1[i], y2[i]])
-}
-
-edgelist1 <- as.data.frame(cbind(from, to))
-
-colnames(edgelist1) <- c("from", "to")
-
-edgelist1$weight <- as.numeric(w) # Ensures that weight is numeric not a factor
-
-# Checking - if max is more than 1 and min less than -1 there is a problem 
-max(edgelist1$weight)
-min(edgelist1$weight)
-
-write.csv(edgelist1, "Data/Letters_edgelist.csv")
-
-# Node list - unique rownames and colnames
-
-words <- unique(c(from, to))
-
-nodelist1 <- as.data.frame(cbind(words, words))
-colnames(nodelist1) <- c("ID", "label")
-
-write.csv(nodelist1, "Data/Letters_nodelist.csv")
-
-
 
