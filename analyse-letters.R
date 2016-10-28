@@ -12,8 +12,12 @@
 # Packages Used: XML, plyr,                                                    #
 # Input:                                                                       #
 # Output:                                                                      #
-# Last Updated: 27 October 2016                                                #
+# Last Updated: 28 October 2016                                                #
 ################################################################################
+
+################################
+# 1. Extract Data From Letters #
+################################
 
 # Load packages
 require("XML")
@@ -68,11 +72,14 @@ b <- as.vector(letter_data$let_body2)
                 write(y, paste0("Data/Letters_txt/", a[i], ".txt"))
         } 
 
-# Topic Modelling
+######################
+# 2. Topic Modelling #
+######################
 
 
-
-# Vector Space Model
+##########################
+# 3. Vector Space Models #
+##########################
 
 # Load the wordVectors package
 library(devtools)
@@ -152,6 +159,7 @@ ggsave("Letters.jpeg", path = "Viz/", width = 24,
 source("Code/Letters_1916_Internship/word2vec-analysis-letters1916.R")
 
 # Explore specific words of interest use the function w2v_analysis_letters1916()
+# The function packages the code used for the whole corpus for key words.
 # The function takes 5 arguments:
 # vsm - a vector space model 
 # word - a focus word in " "
@@ -170,4 +178,13 @@ source("Code/Letters_1916_Internship/word2vec-analysis-letters1916.R")
 
 w2v_analysis_letters1916()
 
+#######################
+# 4. Network analysis #
+#######################
+
+# Create a matrix of cosine difference between each word in model and every 
+# other word in the same model closer to 0 = similarity and closer to 2 = total
+# difference
+
+similarity <- cosineSimilarity(let, let) %>% round(2)
 
