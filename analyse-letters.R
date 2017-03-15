@@ -61,6 +61,11 @@ letter_data <- ldply(letter_data, data.frame)
 keywords <- ldply(keywords, data.frame)
 words <- ldply(words, data.frame)
 
+# Write dataframes as csv files to memory
+write.csv(letter_data, "Results/Letter_data.csv")
+write.csv(keywords, "Results/Keywords.csv")
+write.csv(words, "Results/Words.csv")
+
 # Create .txt files from letter body in letter_data and write to folder - this
 # uses the let_id as the file name and also includes it as part of the body
 # text for ease of tracking.
