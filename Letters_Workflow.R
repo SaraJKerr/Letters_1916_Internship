@@ -6,9 +6,8 @@
 # Institution: Maynooth University                                             #
 # Project: Letters of 1916 - Prof Susan Schreibman                             #
 # Purpose: Workflow script combining functions                                 #
-# Based on:                         #
 # Data Used: Letters in xml format, downloaded from LetEd                      #
-# Packages Used: XML,                                                               #
+# Packages Used: XML, devtools, wordVectors, tm, ggplot2                                #
 # Input:                                                                       #
 # Output:                                                                      #
 # Last Updated: 27 March 2017                                                  #
@@ -21,6 +20,11 @@
 
 # Load packages
 library(XML)
+library(devtools)
+# install_github("bmschmidt/wordVectors", force = T) # Check Xcode license agreed
+library(wordVectors)
+library(tm)
+library(ggplot2)
 
 ##########################################
 # Step 1: Extract body text from letters #
@@ -29,10 +33,28 @@ library(XML)
 # Load the function to extract the body text and save each as .txt files
 source("Code/Letters_1916_Internship/Text_Extract.R") # From my Mac
 
+
 # Identify folder where XML files are saved and which format they are in
-input_dir <- "RawData/Letters" # path to xml letters
-files <- dir(input_dir, "\\.xml") # vector of file names
-input <- file.path(input_dir,files) # this creates a path to each file
+input_dir1 <- "RawData/Letters" # path to xml letters
+files <- dir(input_dir1, "\\.xml") # vector of file names
+input_xml <- file.path(input_dir1,files) # this creates a path to each file
 
 # Run the function
-x <- lapply(input, text_extract) # x will return as NULL but files are written
+x <- lapply(input_xml, text_extract) # x returns NULL but the files are written
+
+#############################
+# Step 2: Process the texts #
+#############################
+
+# Load the function to process the files
+source("Code/Letters_1916_Internship/Text_Process.R") # From my Mac
+
+# Identify folder where .txt files are saved and which format they are in
+input_dir2 <- "Text_Files" # path to .txt letters' folder
+
+y <- lapply(input_dir2, text_process)
+
+#####################################
+# Step 3:
+#####################################
+
