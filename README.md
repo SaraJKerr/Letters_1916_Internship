@@ -11,6 +11,8 @@ It is creating a crowd-sourced digital collection of letters written around the 
 The project website can be found at: http://letters1916.maynoothuniversity.ie 
 Professor Susan Schreibman is the Project Director and Editor-in-Chief
 
+### Contents
+
 
 
 ### Contributor
@@ -19,4 +21,4 @@ Professor Susan Schreibman is the Project Director and Editor-in-Chief
 #### Twitter - @data_fiend
 
 ### Acknowledgements
-#### This research is supported by a John and Pat Hume Scholarship, two golden retrievers and a very understanding husband!
+#### This research is supported by a John and Pat Hume Scholarship, two golden retrievers and Iain, a very understanding husband!
