@@ -21,10 +21,11 @@
 # Load packages
 library(XML)
 library(devtools)
-# install_github("bmschmidt/wordVectors", force = T) # Check Xcode license agreed
+install_github("bmschmidt/wordVectors", force = T) # Check Xcode license agreed
 library(wordVectors)
 library(tm)
 library(ggplot2)
+library(koRpus)
 
 ##########################################
 # Step 1: Extract body text from letters #
@@ -57,7 +58,6 @@ source("Code/Letters_1916_Internship/Text_Process.R") # From my Mac
 # Identify folder where .txt files are saved and which format they are in
 input_dir2 <- "Text_Files" # path to .txt letters' folder
 
-
 y1 <- lapply(input_dir2, text_process) # combined .txt files and a DTM created
 
 input_dir3 <- "Processed_Files/Letters_cap.txt" # This output by the line above
@@ -65,6 +65,11 @@ input_dir3 <- "Processed_Files/Letters_cap.txt" # This output by the line above
 y2 <- text_tag(input_dir3) # 
 
 #####################################
-# Step 3:
+# Step 3: Word2Vec
 #####################################
+
+source("Code/Letters_1916_Internship/Text_Word_Vec_Analysis.R") # From my Mac
+
+text <- "Processed_Files/Letters_corpus.txt"
+w2v_train(text)
 

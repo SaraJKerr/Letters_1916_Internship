@@ -3,7 +3,7 @@
 # Date: 1 September 2016                                                       #
 # Author: Sara J Kerr                                                          #
 # ORCID:orcid.org/0000-0002-2322-1178                                          #
-# Purpose: Word2Vec analysis and visualisation                                 #
+# Purpose: Word2Vec creation, analysis and visualisation                       #
 # Based on: https://github.com/bmschmidt/wordVectors/tree/master/R             #
 #           http://www.codeproject.com/Tips/788739/Visualization-of-High-      #
 #               Dimensional-Data-using-t-SNE                                   #
@@ -16,6 +16,37 @@
 # Last Updated: 27 March 2017                                                  #
 ################################################################################
 
+# train_word2vec takes several parameters - an input prepared .txt file, an 
+# output file, vectors are the number of dimensions the default is 100, and
+# window is the number of words either side of the context word, by default
+# the function uses skip-gram this can be changed by including cbow = 1
+# This function uses train_word2vec and allows several variables to be used
+# to create 2 VSM based on Baroni, Dinu and Kruszewski 2010
+
+# text <- "Processed_Files/Letters_corpus.txt"
+
+w2v_train <- function(text) {
+        train_word2vec(text, output= "Results/W2V/Let_default.bin",
+                       threads = 2, vectors = 100, window = 12,
+                       negative_samples = 5)
+        
+        train_word2vec(text, output = "Results/W2V/Let_win5.bin", 
+                       threads = 2, vectors = 400, window = 5,
+                       negative_samples = 10)
+        
+        train_word2vec(text, output = "Results/W2V/Let_win2.bin", 
+                       threads = 2, vectors = 300, window = 2,
+                       negative_samples = 10)
+        
+        train_word2vec(text, output = "Results/W2V/Let_win15.bin", 
+                       threads = 2, vectors = 300, window = 15,
+                       negative_samples = 10)
+        
+}
+        
+        
+
+################################################################################
 # This function analyses a chosen term in a vector space model
 # The function takes 6 arguments:
 # vsm - a vector space model 

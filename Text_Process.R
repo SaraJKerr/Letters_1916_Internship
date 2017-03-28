@@ -31,11 +31,20 @@
 
 
 text_process <- function(input_dir2) {
+        # Prepare .txt file for w2v analysis
         prep_word2vec(input_dir2, "Processed_Files/Letters_corpus.txt", 
-                      lowercase = T)
-        prep_word2vec(input_dir2, "Processed_Files/Letters_cap.txt",
-                       lowercase = F)
+                     lowercase = T)
+        prep_word2vec(input_dir2, "Processed_Files/Letters_cap.txt", 
+                      lowercase = F)
+        # # Prepare .txt file with capitals for tagging                
+        # docs <- Corpus(DirSource(input_dir2)) # Create V corpus
+        # docs <- tm_map(docs, removePunctuation)    
+        # docs <- tm_map(docs, removeWords, stopwords("english")) 
+        # docs <- tm_map(docs, stripWhitespace)   
+        # docs <- tm_map(docs, PlainTextDocument)
+        # write(docs, "Processed_Files/Letters_cap.txt")
         
+        # Prepare Document Term Matrix
         let <- dir(input_dir2) # Saves file names (letter id)
         
         docs <- Corpus(DirSource(input_dir2)) # Create V corpus
