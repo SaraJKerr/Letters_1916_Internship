@@ -7,7 +7,7 @@
 # Project: Letters of 1916 - Prof Susan Schreibman                             #
 # Purpose: Workflow script combining functions                                 #
 # Data Used: Letters in xml format, downloaded from LetEd                      #
-# Packages Used: XML, devtools, wordVectors, tm, ggplot2                                #
+# Packages Used: XML, devtools, wordVectors, tm, koRpus, ggplot2               #
 # Input:                                                                       #
 # Output:                                                                      #
 # Last Updated: 27 March 2017                                                  #
@@ -45,6 +45,11 @@ x <- lapply(input_xml, text_extract) # x returns NULL but the files are written
 #############################
 # Step 2: Process the texts #
 #############################
+# Prior to running the script TreeTagger needs to be downloaded to your computer
+# it can be downloaded from http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
+# Instructions for downloading and set up of TreeTagger are on the site.
+# If error 'error TreeTagger/lib/english.par not found' appears check the
+# TreeTagger 'lib' folder and rename the 'english-utf8.par' file 'english.par'.
 
 # Load the function to process the files
 source("Code/Letters_1916_Internship/Text_Process.R") # From my Mac
@@ -52,7 +57,12 @@ source("Code/Letters_1916_Internship/Text_Process.R") # From my Mac
 # Identify folder where .txt files are saved and which format they are in
 input_dir2 <- "Text_Files" # path to .txt letters' folder
 
-y <- lapply(input_dir2, text_process)
+
+y1 <- lapply(input_dir2, text_process) # combined .txt files and a DTM created
+
+input_dir3 <- "Processed_Files/Letters_cap.txt" # This output by the line above
+
+y2 <- text_tag(input_dir3) # 
 
 #####################################
 # Step 3:
