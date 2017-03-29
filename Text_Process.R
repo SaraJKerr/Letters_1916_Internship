@@ -13,18 +13,21 @@
 # Input:  Folder of .txt files                                                 #
 # Output: A combined .txt file for w2v analysis, a combined .txt file with     #
 #         upper case maintained, a DTM, list of nouns, list proper nouns       #
-# Last Updated: 27 March 2017                                                  #
+# Last Updated: 29 March 2017                                                  #
 ################################################################################
 
 # These functions processes the .txt files and saves them in the formats needed
 # for the analyses which follow. 
- 
-
 # Prior to running the script TreeTagger needs to be downloaded to your computer
 # it can be downloaded from http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
 # Instructions for downloading and set up of TreeTagger are on the site.
 # If error 'error TreeTagger/lib/english.par not found' appears check the
 # TreeTagger 'lib' folder and rename the 'english-utf8.par' file 'english.par'.
+
+################################################################################
+
+# text_process takes in a corpus of .txt files and outputs files for w2v 
+# analysis, text tagging and topic modelling.
 
 # Identify folder where .txt files are saved and which format they are in
 # input_dir2 <- "Text_files" # path to .txt letters
@@ -34,15 +37,11 @@ text_process <- function(input_dir2) {
         # Prepare .txt file for w2v analysis
         prep_word2vec(input_dir2, "Processed_Files/Letters_corpus.txt", 
                      lowercase = T)
+        
+        # Prepare .txt file for tagging
         prep_word2vec(input_dir2, "Processed_Files/Letters_cap.txt", 
                       lowercase = F)
-        # # Prepare .txt file with capitals for tagging                
-        # docs <- Corpus(DirSource(input_dir2)) # Create V corpus
-        # docs <- tm_map(docs, removePunctuation)    
-        # docs <- tm_map(docs, removeWords, stopwords("english")) 
-        # docs <- tm_map(docs, stripWhitespace)   
-        # docs <- tm_map(docs, PlainTextDocument)
-        # write(docs, "Processed_Files/Letters_cap.txt")
+        
         
         # Prepare Document Term Matrix
         let <- dir(input_dir2) # Saves file names (letter id)
@@ -62,6 +61,12 @@ text_process <- function(input_dir2) {
         write.csv(m, "Processed_Files/DTM_Letters") # Writes DTM to file
         
 }
+
+################################################################################
+
+# text_tag uses the .txt file created in text_process with capital letters 
+# intact. Output is two .txt files, one of nouns and one of proper nouns for use
+# in topic modelling.
 
 text_tag <- function(input_dir3) {
        
