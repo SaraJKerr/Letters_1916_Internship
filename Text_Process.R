@@ -47,18 +47,17 @@ text_process <- function(input_dir2) {
         let <- dir(input_dir2) # Saves file names (letter id)
         
         docs <- Corpus(DirSource(input_dir2)) # Create V corpus
-        docs <- tm_map(docs, removePunctuation)    
+        docs <- tm_map(docs, removePunctuation)   
+        docs <- tm_map(docs, removeNumbers)
         docs <- tm_map(docs, tolower)   # Convert to lowercase   
         docs <- tm_map(docs, removeWords, stopwords("english")) 
         docs <- tm_map(docs, stripWhitespace)   
         docs <- tm_map(docs, PlainTextDocument)
         
+        
         dtm <- DocumentTermMatrix(docs) # Create a DTM
-        
-        m <- as.matrix(dtm) # Convert to a matrix
-        rownames(m) <- let # add letter id as rownames
-        
-        write.csv(m, "Processed_Files/DTM_Letters") # Writes DTM to file
+        saveRDS(dtm, file = "Processed_Files/DTM_Letters.rds") # Write DTM to file
+         
         
 }
 
@@ -66,12 +65,12 @@ text_process <- function(input_dir2) {
 
 # text_tag uses the .txt file created in text_process with capital letters 
 # intact. Output is two .txt files, one of nouns and one of proper nouns for use
-# in topic modelling.
+# in topic modelling. 
 
-text_tag <- function(input_dir3) {
+text_tag <- function(text) {
        
          # Read in text and apply POS tagger. This creates a kRp.tagged file
-        text_tagged <- treetag(input_dir3,
+        text_tagged <- treetag(text,
                                treetagger="manual", lang="en", 
                                TT.options=list(path="TreeTagger", preset="en"))
         
@@ -85,7 +84,7 @@ text_tag <- function(input_dir3) {
         nouns <- nouns$token
         
         # Save noun file as plain text
-        write(nouns, "Processed_Files/Tagged/Letters_NN")
+        write(nouns, paste0("Processed_Files/Tagged/", let ,"_NN.txt"))
         
         # Extract proper nouns
         proper_single_nouns <- subset(tagged_doc, tag == "NP")
@@ -94,7 +93,7 @@ text_tag <- function(input_dir3) {
         proper_nouns <- proper_nouns$token
         
         # Save proper noun file as plain text
-        write(proper_nouns, "Processed_Files/Tagged/Letters_NP")
+        write(proper_nouns, paste0("Processed_Files/Tagged/", let ,"_NP.txt"))
 
 }
 
