@@ -13,7 +13,7 @@
 # Input:  Folder of .txt files                                                 #
 # Output: A combined .txt file for w2v analysis, a combined .txt file with     #
 #         upper case maintained, a DTM, list of nouns, list proper nouns       #
-# Last Updated: 29 March 2017                                                  #
+# Last Updated: 9 May 2017                                                     #
 ################################################################################
 
 # These functions processes the .txt files and saves them in the formats needed
@@ -76,6 +76,9 @@ text_tag <- function(text) {
         
         # Extract the words, tags and description
         tagged_doc <- text_tagged@TT.res[, c(1,2,6)]
+        
+        # Write the fully tagged file to the folder
+        write(tagged_doc, paste0("Processed_Files/Tagged/", let, "_full.txt"))
         
         # Extract nouns
         single_nouns <- subset(tagged_doc, tag == "NN")
