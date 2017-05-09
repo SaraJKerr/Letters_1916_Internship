@@ -17,13 +17,13 @@
 #                stringi                                                       #
 # Input: folder of plain text files                                            #
 # Output: VSMs, csv files, wordlists, t-SNE plots, html network graphs                                    #
-# Last Updated: 29 March 2017                                                  #
+# Last Updated: 8th May 2017                                                   #
 ################################################################################
 
 # w2v_train uses train_word2vec and allows several variables to be used
 # to create 4 VSM, one based on the default settings, one based on Baroni, Dinu
-# and Kruszewski 2014 suggestions for predictive models, and one with a larger
-# window and negative samples as per Baroni et al.
+# and Kruszewski's (2014) suggestions for predictive models, and one with a larger
+# window and negative samples also per Baroni et al.
 # train_word2vec takes several parameters - an input prepared .txt file, an 
 # output file, vectors are the number of dimensions the default is 100, and
 # window is the number of words either side of the context word, by default
