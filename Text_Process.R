@@ -78,7 +78,7 @@ text_tag <- function(text) {
         tagged_doc <- text_tagged@TT.res[, c(1,2,6)]
         
         # Write the fully tagged file to the folder
-        write(tagged_doc, "Processed_Files/Tagged/let_full.txt")
+        write.csv(tagged_doc, "Processed_Files/Tagged/let_full.csv")
         
         # Extract nouns
         single_nouns <- subset(tagged_doc, tag == "NN")
@@ -87,7 +87,7 @@ text_tag <- function(text) {
         nouns <- nouns$token
         
         # Save noun file as plain text
-        write(nouns, "Processed_Files/Tagged/_NN.txt")
+        write(nouns, "Processed_Files/Tagged/let_NN.txt")
         
         # Extract proper nouns
         proper_single_nouns <- subset(tagged_doc, tag == "NP")
@@ -96,7 +96,7 @@ text_tag <- function(text) {
         proper_nouns <- proper_nouns$token
         
         # Save proper noun file as plain text
-        write(proper_nouns, "Processed_Files/Tagged/_NP.txt")
+        write(proper_nouns, "Processed_Files/Tagged/let_NP.txt")
 
 }
 
