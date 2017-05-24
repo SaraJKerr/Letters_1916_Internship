@@ -32,19 +32,19 @@
 # text <- "Processed_Files/Letters_corpus.txt"
 
 w2v_train <- function(text) {
-        train_word2vec(text, output= "Results/W2V/Let_default.bin",
+        train_word2vec(text, output= paste0(config_results_folderpath, "/W2V/Let_default.bin"),
                        threads = 2, vectors = 100, window = 12,
                        negative_samples = 5)
         
-        train_word2vec(text, output = "Results/W2V/Let_win5.bin", 
+        train_word2vec(text, output = paste0(config_results_folderpath, "/W2V/Let_win5.bin"), 
                        threads = 2, vectors = 400, window = 5,
                        negative_samples = 10)
         
-        train_word2vec(text, output = "Results/W2V/Let_win2.bin", 
+        train_word2vec(text, output = paste0(config_results_folderpath, "/W2V/Let_win2.bin"), 
                        threads = 2, vectors = 300, window = 2,
                        negative_samples = 10)
         
-        train_word2vec(text, output = "Results/W2V/Let_win15.bin", 
+        train_word2vec(text, output = paste0(config_results_folderpath, "/W2V/Let_win15.bin"), 
                        threads = 2, vectors = 300, window = 15,
                        negative_samples = 10)
         
@@ -88,7 +88,7 @@ text_kwic <- function(files, input, word, context) {
         }
         colnames(result) <- c("file", "position", "left",
                               "keyword", "right")
-        write.csv(result, paste0("Results/KWIC/", word, "_", 
+        write.csv(result, paste0(config_results_folderpath, "/KWIC/", word, "_", 
                                  context, ".csv"))
         cat("Your results have been saved")
 }

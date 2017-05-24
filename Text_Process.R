@@ -13,7 +13,9 @@
 # Input:  Folder of .txt files                                                 #
 # Output: A combined .txt file for w2v analysis, a combined .txt file with     #
 #         upper case maintained, a DTM, list of nouns, list proper nouns       #
-# Last Updated: 9 May 2017                                                     #
+# Last Updated: 09 May   2017                                                  #
+# Last Update By: Shane A. McGarry                                             #
+# Comments: Updated the file to work with an R configuration file              #
 ################################################################################
 
 # These functions processes the .txt files and saves them in the formats needed
@@ -35,13 +37,12 @@
 
 text_process <- function(input_dir2) {
         # Prepare .txt file for w2v analysis
-        prep_word2vec(input_dir2, "Processed_Files/Letters_corpus.txt", 
+        prep_word2vec(input_dir2, paste0(config_process_folderpath,"/Letters_corpus.txt"), 
                      lowercase = T)
         
         # Prepare .txt file for tagging
-        prep_word2vec(input_dir2, "Processed_Files/Letters_cap.txt", 
+        prep_word2vec(input_dir2, paste0(config_process_folderpath, "/Letters_cap.txt"), 
                       lowercase = F)
-        
         
         # Prepare Document Term Matrix
         let <- dir(input_dir2) # Saves file names (letter id)
@@ -52,13 +53,10 @@ text_process <- function(input_dir2) {
         docs <- tm_map(docs, tolower)   # Convert to lowercase   
         docs <- tm_map(docs, removeWords, stopwords("english")) 
         docs <- tm_map(docs, stripWhitespace)   
-        docs <- tm_map(docs, PlainTextDocument)
-        
+        #docs <- tm_map(docs, PlainTextDocument)
         
         dtm <- DocumentTermMatrix(docs) # Create a DTM
-        saveRDS(dtm, file = "Processed_Files/DTM_Letters.rds") # Write DTM to file
-         
-        
+        saveRDS(dtm, file = paste0(config_process_folderpath, "/DTM_Letters.rds")) # Write DTM to file
 }
 
 ################################################################################
@@ -72,13 +70,13 @@ text_tag <- function(text) {
          # Read in text and apply POS tagger. This creates a kRp.tagged file
         text_tagged <- treetag(text,
                                treetagger="manual", lang="en", 
-                               TT.options=list(path="TreeTagger", preset="en"))
+                               TT.options=list(path=config_treetag_path, preset="en"))
         
         # Extract the words, tags and description
         tagged_doc <- text_tagged@TT.res[, c(1,2,6)]
         
         # Write the fully tagged file to the folder
-        write.csv(tagged_doc, "Processed_Files/Tagged/let_full.csv")
+        write.csv(tagged_doc, paste0(config_process_folderpath, "/Tagged/let_full.csv"))
         
         # Extract nouns
         single_nouns <- subset(tagged_doc, tag == "NN")
@@ -87,7 +85,7 @@ text_tag <- function(text) {
         nouns <- nouns$token
         
         # Save noun file as plain text
-        write(nouns, "Processed_Files/Tagged/let_NN.txt")
+        write(nouns, paste0(config_process_folderpath, "/Tagged/_NN.txt"))
         
         # Extract proper nouns
         proper_single_nouns <- subset(tagged_doc, tag == "NP")
@@ -96,8 +94,7 @@ text_tag <- function(text) {
         proper_nouns <- proper_nouns$token
         
         # Save proper noun file as plain text
-        write(proper_nouns, "Processed_Files/Tagged/let_NP.txt")
-
+        write(proper_nouns, paste0(config_process_folderpath, "/Tagged/_NP.txt"))
 }
 
 

@@ -22,6 +22,7 @@
 library(XML)
 library(devtools)
 install_github("bmschmidt/wordVectors", force = T) # Check Xcode license agreed
+install_github("trestletech/plumber")
 library(wordVectors)
 library(tm)
 library(ggplot2)
@@ -34,22 +35,37 @@ library(RColorBrewer)
 library(visNetwork)
 library(tsne)
 library(Rtsne)
+library(httr)
+library(base64enc)
+library(RMySQL)
+library(sqldf)
+source("config.R")
+
+################################################################################
+# Step 0: Get the letters from the Explore DB                                  #
+################################################################################
+source("Text_Get_From_DB.R")
+data <- get_all_from_db()
 
 ################################################################################
 # Step 1: Extract body text from letters                                       #
 ################################################################################
 
+#OLD CODE FOR GENERATING FILES FROM TEI XML
 # Load the function to extract the body text and save each as .txt files
-source("Code/Letters_1916_Internship/Text_Extract.R") # From my Mac
-
+#source("Code/Letters_1916_Internship/Text_Extract.R") # From my Mac
 
 # Identify folder where XML files are saved and which format they are in
-input_dir1 <- "RawData/Letters" # path to xml letters
-files1 <- dir(input_dir1, "\\.xml") # vector of file names
-input_xml <- file.path(input_dir1,files1) # this creates a path to each file
+#input_dir1 <- "RawData/Letters" # path to xml letters
+#files1 <- dir(input_dir1, "\\.xml") # vector of file names
+#input_xml <- file.path(input_dir1,files1) # this creates a path to each file
 
 # Run the function
-x <- lapply(input_xml, text_extract) # x returns NULL but the files are written
+#x <- lapply(input_xml, text_extract) # x returns NULL but the files are written
+
+#NEW CODE FOR GENERATING FILES FROM DATABASE
+source("Text_Extract.R")
+apply(data, 1, text_extract_fromdb)
 
 ################################################################################
 # Step 2: Process the texts                                                    #
@@ -62,36 +78,37 @@ x <- lapply(input_xml, text_extract) # x returns NULL but the files are written
 # TreeTagger 'lib' folder and rename the 'english-utf8.par' file 'english.par'.
 
 # Load the function to process the files
-source("Code/Letters_1916_Internship/Text_Process.R") # From my Mac
+source("Text_Process.R") # From my Mac
 
 # Identify folder where .txt files are saved and which format they are in
-input_dir2 <- "Text_Files" # path to .txt letters' folder
+#input_dir2 <- "Text_Files" # path to .txt letters' folder
 
-y1 <- lapply(input_dir2, text_process) # combined .txt files and a DTM created
+y1 <- lapply(config_extract_folderpath, text_process) # combined .txt files and a DTM created
 
-input_dir3 <- "Processed_Files/Letters_cap.txt" # This output by the line above
+#input_dir3 <- "Processed_Files/Letters_cap.txt" # This output by the line above
 
-y2 <- text_tag(input_dir3) # 
+y2 <- text_tag(paste0(config_process_folderpath, "/Letters_cap.txt")) # 
 
 ################################################################################
 # Step 3: Word2Vec                                                             #
 ################################################################################
 
-source("Code/Letters_1916_Internship/Text_Word_Vec_Analysis.R") # From my Mac
+source("Text_Word_Vec_Analysis.R") # From my Mac
 
 # Train multiple models - see source file to amend parameters
-text <- "Processed_Files/Letters_corpus.txt"
+#text <- "Processed_Files/Letters_corpus.txt"
+text <- paste0(config_process_folderpath, "/Letters_corpus.txt")
 
 w2v_train(text)
 
 # Search for chosen word in corpus
-input_dir2 <- "Text_Files" # path to .txt letters' folder
-files2 <- dir(input_dir2, "\\.txt") # vector of file names
+#input_dir2 <- "Text_Files" # path to .txt letters' folder
+files2 <- dir(config_extract_folderpath, "\\.txt") # vector of file names
 
 # text_kwic(list of file names, input directory, word, context )
-text_kwic(files2[1:100], input_dir2, "rising", 6)
+text_kwic(files2[1:100], config_extract_folderpath, "rising", 6)
 
-input_dir4 <- "Results/W2V"
+input_dir4 <- paste0(config_results_folderpath, "/W2V")
 files4 <- dir(input_dir4, "\\.bin") 
 input_bin <- file.path(input_dir4,files4)
 
@@ -126,9 +143,9 @@ w2v_clus_vsm4 <- sapply(sample(1:centers, 5), function(n){
 # Explore the vector space model - word list and plots for chosen term
 # w2v_analysis2(VSM, word, seed, path for output, output file name, total words)
 
-w2v_analysis2(vsm1, "theatre", 42, "Results/VSM1_Trial/", "theatre200", 200)
+w2v_analysis2(vsm1, "theatre", 42, paste0(config_results_folderpath, "/VSM1_Trial/"), "theatre200", 200)
 
-w2v_analysis2(vsm4, "prisoner", 42, "Results/VSM4_Trial/", "prisoner300", 300)
+w2v_analysis2(vsm4, "prisoner", 42, paste0(config_results_folderpath, "/VSM4_Trial/"), "prisoner300", 300)
 
 
 
