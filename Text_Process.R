@@ -59,6 +59,7 @@ text_process <- function(input_dir2) {
         #docs <- tm_map(docs, PlainTextDocument)
         
         dtm <- DocumentTermMatrix(docs) # Create a DTM
+        dtm$dimnames$Docs <- let # Adds the document names
         saveRDS(dtm, file = paste0(config_process_folderpath, "/DTM_Letters.rds")) # Write DTM to file
 }
 
