@@ -40,6 +40,9 @@ text_process <- function(input_dir2) {
         prep_word2vec(input_dir2, paste0(config_process_folderpath,"/Letters_corpus.txt"), 
                      lowercase = T)
         
+        prep_word2vec(input_dir2, paste0(config_process_folderpath,"/Letters_bigrams.txt"), 
+                lowercase = T, bundle_ngrams = 2)
+        
         # Prepare .txt file for tagging
         prep_word2vec(input_dir2, paste0(config_process_folderpath, "/Letters_cap.txt"), 
                       lowercase = F)
